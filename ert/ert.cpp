@@ -2,14 +2,6 @@
 
 using namespace std;
 
-void	print_jobs(Job job_array[], int size)
-{
-	for (int i = 0; i < size; i++)
-	{
-		cout << "Job " << job_array[i].id << ": r: " << job_array[i].ready_time << "  p: " << job_array[i].processing_time << "  s: " << job_array[i].start_time << endl;
-	}
-}
-
 void	merge(Job fill[], Job job_array1[], Job job_array2[], int size1, int size2)
 {
 	int count = 0, count1 = 0, count2 = 0;
@@ -61,15 +53,15 @@ int construct_schedule(Job job_array[], int size)
 
 int main()
 {
-	int	n;
+	int	n_jobs;
 
 	cout << "Solve 1 | rj | Cmax problem" << endl;
 	cout << "Introduce the number of jobs: ";
-	cin >> n;
+	cin >> n_jobs;
 
-	Job	job_array[n];
+	Job	job_array[n_jobs];
 
-	for (int i = 1; i <= n; i++) {
+	for (int i = 1; i <= n_jobs; i++) {
 		job_array[i - 1].id = i;
 		cout << "Introduce the processing time of job " << i << ": ";
 		cin >> job_array[i - 1].processing_time;
@@ -77,11 +69,11 @@ int main()
 		cin >> job_array[i - 1].ready_time;
 	}
 	
-	merge_sort(job_array, n);
-	int Cmax = construct_schedule(job_array, n);
+	merge_sort(job_array, n_jobs);
+	int Cmax = construct_schedule(job_array, n_jobs);
 
 	cout << endl << "Result: " << endl << "Machine 1:" << endl;
-	for (int i = 1; i <= n; i++) {
+	for (int i = 1; i <= n_jobs; i++) {
 		cout << "Starting time of job " << job_array[i - 1].id << ": " << job_array[i - 1].start_time 
 			<< ", ending time: " << job_array[i - 1].start_time + job_array[i - 1].processing_time << endl;
 	}
