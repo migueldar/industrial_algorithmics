@@ -14,19 +14,17 @@ void	merge(Job fill[], Job job_array1[], Job job_array2[], int size1, int size2)
 {
 	int count = 0, count1 = 0, count2 = 0;
 
-	while (count1 < size1 && count2 < size2)
+	while (count1 < size1 || count2 < size2)
 	{
-		if (job_array1[count1].ready_time > job_array2[count2].ready_time)
+		if (count1 >= size1)
+			fill[count++] = job_array2[count2++];
+		else if (count2 >= size2)
+			fill[count++] = job_array1[count1++];
+		else if (job_array1[count1].ready_time > job_array2[count2].ready_time)
 			fill[count++] = job_array2[count2++];
 		else
 			fill[count++] = job_array1[count1++];
 	}
-
-	while (count1 < size1)
-		fill[count++] = job_array1[count1++];
-
-	while (count2 < size2)
-		fill[count++] = job_array2[count2++];
 }
 
 void	merge_sort(Job job_array[], int size)
@@ -48,23 +46,24 @@ void	merge_sort(Job job_array[], int size)
 	merge(job_array, arr1, arr2, roundUp, roundDown);
 }
 
-void	construct_schedule(Job job_array[], int size)
+int construct_schedule(Job job_array[], int size)
 {
 	int start = 0;
 
-	for (int i = 1; i <= size; i++) {
-		if (start < job_array[i - 1].ready_time)
-			start = job_array[i - 1].ready_time;
-		job_array[i - 1].start_time = start;
-		start += job_array[i - 1].processing_time;
+	for (int i = 0; i < size; i++) {
+		if (start < job_array[i].ready_time)
+			start = job_array[i].ready_time;
+		job_array[i].start_time = start;
+		start += job_array[i].processing_time;
 	}
+	return start;
 }
 
 int main()
 {
 	int	n;
 
-	cout << "This is the implementation of ERT scheduling rule" << endl;
+	cout << "Solve 1 | rj | Cmax problem" << endl;
 	cout << "Introduce the number of jobs: ";
 	cin >> n;
 
@@ -79,12 +78,12 @@ int main()
 	}
 	
 	merge_sort(job_array, n);
-	construct_schedule(job_array, n);
-	print_jobs(job_array, n);
+	int Cmax = construct_schedule(job_array, n);
 
 	cout << endl << "Result: " << endl << "Machine 1:" << endl;
 	for (int i = 1; i <= n; i++) {
-		cout << "Starting time of job " << job_array[i - 1].id << ": " << job_array[i - 1].start_time << ", ending time: " << job_array[i - 1].start_time + job_array[i - 1].processing_time << endl;
+		cout << "Starting time of job " << job_array[i - 1].id << ": " << job_array[i - 1].start_time 
+			<< ", ending time: " << job_array[i - 1].start_time + job_array[i - 1].processing_time << endl;
 	}
-
+	cout << "Cmax = " << Cmax << endl;
 }
