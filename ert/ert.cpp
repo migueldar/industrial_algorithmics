@@ -77,5 +77,5 @@ int main()
 		cout << "Starting time of job " << job_array[i - 1].id << ": " << job_array[i - 1].start_time 
 			<< ", ending time: " << job_array[i - 1].start_time + job_array[i - 1].processing_time << endl;
 	}
-	cout << "Cmax = " << Cmax << endl;
+	cout << endl << "Cmax = " << Cmax << endl;
 }
